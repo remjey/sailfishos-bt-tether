@@ -1,0 +1,5 @@
+#!/bin/sh
+
+mkdir /var/tmp/bt-tether
+pand --listen --role NAP --master --devup /usr/local/lib/bt-tether/devup --devdown /usr/local/lib/bt-tether/devdown
+

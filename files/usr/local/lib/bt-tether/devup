@@ -1,0 +1,26 @@
+#!/bin/sh
+
+. "$( dirname $0 )"/common
+
+ifconfig $IF $SUBNET.1 netmask 255.255.255.0 broadcast $SUBNET.255 up
+
+cat >$UDHCPD_CONF <<EOF
+  interface $IF
+  pidfile $UDHCPD_PID
+  leasefile $UDHCPD_LEASE
+
+  start	$SUBNET.20
+  end	$SUBNET.254
+
+  opt	dns	$SUBNET.1
+  opt	subnet	255.255.255.0
+  opt	router	$SUBNET.1
+
+EOF
+
+echo 1 > /proc/sys/net/ipv4/ip_forward
+iptables -t nat -A POSTROUTING -s $SUBNET.0/24 -j MASQUERADE
+
+udhcpd $UDHCPD_CONF
+/usr/local/lib/bt-tether/dns-relay -f $SUBNET.1 > $DNSRELAY_PID
+

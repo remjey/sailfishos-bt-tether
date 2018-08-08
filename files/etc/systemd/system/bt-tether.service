@@ -1,0 +1,11 @@
+[Unit]
+Description=Bluetooth Tethering
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/bt-tether
+RemainAfterExit=yes
+
+[Install]
+WantedBy=bluetooth.target
+

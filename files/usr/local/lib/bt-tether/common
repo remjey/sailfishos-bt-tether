@@ -1,0 +1,7 @@
+IF=$1
+SUBNET=10.64.$(( 100 + ${IF#bnep} ))
+DNSRELAY_PID=/var/tmp/bt-tether/$IF.dns-relay
+UDHCPD_CONF=/var/tmp/bt-tether/$IF.udhcpd
+UDHCPD_PID=$UDHCPD_CONF.pid
+UDHCPD_LEASE=$UDHCPD_CONF.lease
+

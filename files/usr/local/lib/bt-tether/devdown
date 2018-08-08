@@ -1,0 +1,11 @@
+#!/bin/sh
+
+. "$( dirname $0 )"/common
+
+kill -- "$( cat $UDHCPD_PID )"
+kill -- "$( cat $DNSRELAY_PID )"
+
+rm $DNSRELAY_PID $UDHCPD_PID $UDHCPD_LEASE $UDHCPD_CONF
+
+iptables -t nat -D POSTROUTING -s $SUBNET.0/24 -j MASQUERADE
+

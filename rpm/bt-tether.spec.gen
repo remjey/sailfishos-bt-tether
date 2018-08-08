@@ -1,0 +1,51 @@
+#!/bin/sh
+
+VERSION="$1"
+RELEASE="${2:-1}"
+
+cat <<__EOF__
+
+Name: bt-tether
+Version: ${VERSION}
+Release: 1
+Summary: Bluetooth Tethering
+Group: Miscellaneous
+License: MIT
+URL: https://jf.almel.fr
+Source: bt-tether-${VERSION}-${RELEASE}.tgz
+
+%description
+This package will enable BlueTooth tethering on SailfishOS.
+
+%prep
+%setup -n bt-tether-${VERSION}-${RELEASE}
+
+%build
+cd src
+make
+
+%install
+mkdir -p %{buildroot}
+cp -r files/* %{buildroot}
+cp src/dns-relay %{buildroot}/usr/local/lib/bt-tether
+
+%files
+/etc
+/usr
+
+%clean
+
+%post
+/usr/local/lib/bt-tether/bluetooth-config install
+systemctl enable bt-tether.service
+systemctl start bt-tether.service
+systemctl restart bluetooth.service
+
+%preun
+/usr/local/lib/bt-tether/bluetooth-config uninstall
+systemctl stop bt-tether.service
+systemctl disable bt-tether.service
+systemctl restart bluetooth.service
+
+__EOF__
+

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ "install" = "$1" ]; then
+
+  echo -e "##bt-tether##begin##\nDisablePlugins = network\n##bt-tether##end##" >> /etc/bluetooth/main.conf
+
+elif [ "uninstall" = "$1" ]; then
+
+  sed -i -e "/##bt-tether##begin##/,/##bt-tether##end##/ d" /etc/bluetooth/main.conf
+
+else
+  echo "Usage: $0 install | uninstall"
+  exit 1
+fi
+
+

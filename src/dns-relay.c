@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
         continue;
       }
 
-      if (fds[i].revents == POLLIN) {
+      if ((fds[i].revents & POLLIN) != 0) {
         char buf[MAX_REQ_SIZE];
         ssize_t len = recv(fds[i].fd, buf, sizeof(buf), MSG_WAITALL);
         if (len > 0) {

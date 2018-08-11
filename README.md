@@ -2,7 +2,7 @@
 
 ## Description
 
-*bt-tether* is a small script that enables Bluetooth Tethering on your Jolla Phone. I could not find any software that did that realiably so I tried my hand at it.
+*bt-tether* is a small script that enables your Jolla Phone to share its mobile internet connection over PAN Bluetooth Tethering. I could not find any software that did that realiably on up-to-date SailfishOS so I tried my hand at it.
 
 It is **quite experimental** and a little hacky. It’s only been tested on my Jolla Phone in developer mode. **I’m distributing it here without any warranty**, however I’d be glad to receive feedback, bug reports and pull requests; I’ll do my best to improve it.
 

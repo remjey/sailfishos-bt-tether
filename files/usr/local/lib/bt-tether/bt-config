@@ -1,0 +1,20 @@
+#!/bin/sh
+
+TAG=bt-tether-config
+CFG=/etc/bluetooth/main.conf
+
+if [ "install" = "$1" ]; then
+
+  grep -q "##$TAG##begin##" "$CFG" \
+    || echo -e "##$TAG##begin##\nDisablePlugins = network\n##$TAG##end##" >> "$CFG"
+
+elif [ "uninstall" = "$1" ]; then
+
+  sed -i -e "/##$TAG##begin##/,/##$TAG##end##/ d" "$CFG"
+
+else
+  echo "Usage: $0 install | uninstall"
+  exit 1
+fi
+
+

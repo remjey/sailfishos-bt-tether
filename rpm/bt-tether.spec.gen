@@ -7,7 +7,7 @@ cat <<__EOF__
 
 Name: bt-tether
 Version: ${VERSION}
-Release: 1
+Release: ${RELEASE}
 Summary: Bluetooth Tethering
 Group: Miscellaneous
 License: MIT
@@ -35,17 +35,30 @@ cp src/dns-relay %{buildroot}/usr/local/lib/bt-tether
 
 %clean
 
+%pre
+if [ 2 = "\$1" ]; then
+  if [ -f /etc/systemd/system/bt-tether.service ]; then
+    systemctl stop bt-tether.service
+  else
+    systemctl stop bt-tether-daemon.service
+  fi
+fi
+
 %post
-/usr/local/lib/bt-tether/bluetooth-config install
-systemctl enable bt-tether.service
-systemctl start bt-tether.service
-systemctl restart bluetooth.service
+if [ 1 = "\$1" -o -f /etc/systemd/system/bt-tether.service ]; then
+  /usr/local/lib/bt-tether/bt-config install
+  systemctl restart bluetooth.service
+  systemctl enable bt-tether-daemon.service
+fi
+systemctl start bt-tether-daemon.service
 
 %preun
-/usr/local/lib/bt-tether/bluetooth-config uninstall
-systemctl stop bt-tether.service
-systemctl disable bt-tether.service
-systemctl restart bluetooth.service
+if [ 0 = "\$1" ]; then
+  /usr/local/lib/bt-tether/bt-config uninstall
+  systemctl stop bt-tether-daemon.service
+  systemctl disable bt-tether-daemon.service
+  systemctl restart bluetooth.service
+fi
 
 __EOF__
 

@@ -1,24 +1,25 @@
 #!/bin/sh
 
-. "$( dirname $0 )"/common
+. "$( dirname "$0" )"/common
 
 ifconfig $IF $SUBNET.1 netmask 255.255.255.0 broadcast $SUBNET.255 up
 
-cat >$UDHCPD_CONF <<EOF
-  interface $IF
-  pidfile $UDHCPD_PID
-  leasefile $UDHCPD_LEASE
-
+cat >$UDHCPD_CONF <<__EOF__
   start	$SUBNET.20
   end	$SUBNET.254
+
+  interface $IF
+
+  leasefile $UDHCPD_LEASE
+  pidfile $UDHCPD_PID
 
   opt	dns	$SUBNET.1
   opt	subnet	255.255.255.0
   opt	router	$SUBNET.1
+  opt	broadcast	$SUBNET.255
+__EOF__
 
-EOF
-
-echo 1 > /proc/sys/net/ipv4/ip_forward
+sysctl net.ipv4.ip_forward=1
 iptables -t nat -A POSTROUTING -s $SUBNET.0/24 -j MASQUERADE
 
 udhcpd $UDHCPD_CONF

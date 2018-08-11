@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. "$( dirname $0 )"/common
+. "$( dirname "$0" )"/common
 
 kill -- "$( cat $UDHCPD_PID )"
 kill -- "$( cat $DNSRELAY_PID )"

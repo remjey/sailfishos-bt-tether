@@ -17,7 +17,7 @@ This software is distributed under the terms of the MIT Lincence. See the includ
 Run the `rpm/prep` script with a version (x.y) and a release number as arguments, it should create a `.tgz` and a `.spec` file that can be used by `rpmbuild`. You can use the following command in the `mersdk` VM of the SailfishOS dev environment:
 
 ```
-sb2 -t SailfishOS-2.2.0.29-armv7hl rpmbuild -v -bb SPECS/bt-tether-0.1-1.spec
+sb2 -t SailfishOS-3.0.3.9-armv7hl rpmbuild -v -bb SPECS/bt-tether-0.1-3.spec
 ```
 
 (you may have to change some version numbers and path)

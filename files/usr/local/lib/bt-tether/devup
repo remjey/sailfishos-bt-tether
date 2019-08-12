@@ -21,6 +21,7 @@ __EOF__
 
 sysctl net.ipv4.ip_forward=1
 iptables -t nat -A POSTROUTING -s $SUBNET.0/24 -j MASQUERADE
+iptables -A INPUT -i $IF -j ACCEPT
 
 udhcpd $UDHCPD_CONF
 /usr/local/lib/bt-tether/dns-relay -f $SUBNET.1 > $DNSRELAY_PID

@@ -39,17 +39,19 @@ cp src/dns-relay %{buildroot}/usr/local/lib/bt-tether
 if [ 2 = "\$1" ]; then
   if [ -f /etc/systemd/system/bt-tether.service ]; then
     systemctl stop bt-tether.service
+    systemctl disable bt-tether.service
+    /usr/local/lib/bt-tether/bluetooth-config uninstall
   else
     systemctl stop bt-tether-daemon.service
+    systemctl disable bt-tether-daemon.service
+    /usr/local/lib/bt-tether/bt-config uninstall
   fi
 fi
 
 %post
-if [ 1 = "\$1" -o -f /etc/systemd/system/bt-tether.service ]; then
-  /usr/local/lib/bt-tether/bt-config install
-  systemctl restart bluetooth.service
-  systemctl enable bt-tether-daemon.service
-fi
+/usr/local/lib/bt-tether/bt-config install
+systemctl restart bluetooth.service
+systemctl enable bt-tether-daemon.service
 systemctl start bt-tether-daemon.service
 
 %preun
@@ -59,6 +61,8 @@ if [ 0 = "\$1" ]; then
   systemctl disable bt-tether-daemon.service
   systemctl restart bluetooth.service
 fi
+
+%postun
 
 __EOF__
 

@@ -1,5 +1,6 @@
 [Unit]
 Description=Bluetooth Tethering
+After=bluetooth.service
 
 [Service]
 Type=oneshot
